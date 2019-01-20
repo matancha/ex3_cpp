@@ -228,7 +228,7 @@ Matrix<T> Matrix<T>::operator+(const Matrix<T>& rhs) const
     }
 
     Matrix<T> res(rows(), cols());
-    for (int i = 0; i < rows() * cols(); ++i)
+    for (unsigned int i = 0; i < rows() * cols(); ++i)
     {
         res._matrix[i] = _matrix[i] + rhs._matrix[i];
     }
@@ -244,7 +244,7 @@ Matrix<T> Matrix<T>::operator-(const Matrix<T>& rhs) const
     }
 
     Matrix<T> res(rows(), cols());
-    for (int i = 0; i < rows() * cols(); ++i)
+    for (unsigned int i = 0; i < rows() * cols(); ++i)
     {
         res._matrix[i] = _matrix[i] - rhs._matrix[i];
     }
