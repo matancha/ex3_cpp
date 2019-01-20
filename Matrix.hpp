@@ -228,7 +228,7 @@ Matrix<T> Matrix<T>::operator+(const Matrix<T>& rhs) const
     }
 
     Matrix<T> res(rows(), cols());
-    for (int i = 0; i < rows()*cols(); ++i)
+    for (int i = 0; i < rows() * cols(); ++i)
     {
         res._matrix[i] = _matrix[i] + rhs._matrix[i];
     }
@@ -244,7 +244,7 @@ Matrix<T> Matrix<T>::operator-(const Matrix<T>& rhs) const
     }
 
     Matrix<T> res(rows(), cols());
-    for (int i = 0; i < rows()*cols(); ++i)
+    for (int i = 0; i < rows() * cols(); ++i)
     {
         res._matrix[i] = _matrix[i] - rhs._matrix[i];
     }
@@ -269,8 +269,8 @@ Matrix<T> Matrix<T>::operator*(const Matrix<T>& rhs) const
 
         for (int i = 0; i < this->rows(); ++i)
         {
-            res._matrix[cell] += this->_matrix[row*this->cols()+i] *
-                                 rhs._matrix[col+i*rhs.cols()];
+            res._matrix[cell] += this->_matrix[row * this->cols() + i] *
+                                 rhs._matrix[col+ i * rhs.cols()];
         }
     }
     return res;
@@ -297,19 +297,19 @@ bool Matrix<T>::operator==(const Matrix<T>& rhs) const
 template <typename T>
 bool Matrix<T>::operator!=(const Matrix<T>& rhs) const
 {
-    return (! *this == rhs);
+    return !(*this == rhs);
 }
 
 template <typename T>
 T& Matrix<T>::operator()(unsigned int row, unsigned int col)
 {
-    return _matrix[row*rows() + col];
+    return _matrix[row * rows() + col];
 }
 
 template <typename T>
 T Matrix<T>::operator()(unsigned int row, unsigned int col) const
 {
-    return _matrix[row*rows() + col];
+    return _matrix[row * rows() + col];
 }
 
 template <typename T>
