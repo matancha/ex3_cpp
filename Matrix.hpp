@@ -186,7 +186,7 @@ Matrix<T>::Matrix(unsigned int rows, unsigned int cols, const std::vector<T>& ce
     _cols = cols;
     _matrix = std::vector<T>(_rows*_cols);
 
-    for (int i = 0; i < _rows*_cols; ++i)
+    for (unsigned int i = 0; i < _matrix.size(); ++i)
     {
         _matrix[i] = cells[i];
     }
@@ -199,7 +199,7 @@ Matrix<T>::Matrix(const Matrix<T>& other)
     _cols = other._cols;
     _matrix = std::vector<T>(other._matrix.size());
 
-    for (int i = 0; i < _rows*_cols; ++i)
+    for (unsigned int i = 0; i < _matrix.size(); ++i)
     {
         _matrix[i] = other._matrix[i];
     }
@@ -212,7 +212,7 @@ Matrix<T>& Matrix<T>::operator=(const Matrix<T>& rhs)
     _cols = rhs._cols;
     _matrix = std::vector<T>(rhs._matrix.size());
 
-    for (int i = 0; i < _rows*_cols; ++i)
+    for (unsigned int i = 0; i < _matrix.size(); ++i)
     {
         _matrix[i] = rhs._matrix[i];
     }
