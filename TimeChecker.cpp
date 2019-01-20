@@ -14,14 +14,14 @@ int main(int argc, char *argv[])
         std::cerr << "Usage: TimeChecker <matrix_num>" << std::endl;
     }
 
-    unsigned int matrixNum = atoi(argv[1]);
+    int matrixNum = atoi(argv[1]);
 
     std::cout << "size " << matrixNum << std::endl;
 
-    MatrixXd eigenMat1 = MatrixXd::Random(matrixNum, matrixNum);
-    MatrixXd eigenMat2 = MatrixXd::Random(matrixNum, matrixNum);
-    MatrixXd plusEigenMat;
-    MatrixXd multEigenMat;
+    Eigen::MatrixXd eigenMat1 = Eigen::MatrixXd::Random(matrixNum, matrixNum);
+    Eigen::MatrixXd eigenMat2 = Eigen::MatrixXd::Random(matrixNum, matrixNum);
+    Eigen::MatrixXd plusEigenMat = Eigen::MatrixXd::Random(matrixNum, matrixNum);
+    Eigen::MatrixXd multEigenMat = Eigen::MatrixXd::Random(matrixNum, matrixNum);
 
     std::vector<int> cells;
     for (int i = 0; i < matrixNum * matrixNum; ++i)
@@ -32,6 +32,7 @@ int main(int argc, char *argv[])
     Matrix<int> libMat(matrixNum, matrixNum, cells);
     Matrix<int> plusMat(matrixNum, matrixNum);
     Matrix<int> multMat(matrixNum, matrixNum);
+
     std::stack<std::chrono::time_point<std::chrono::system_clock>> tictoc_stack;
     std::chrono::duration<double> elapsed_seconds;
 
