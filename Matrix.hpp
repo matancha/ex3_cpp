@@ -6,7 +6,18 @@
 #include <iterator>
 #include "Complex.h"
 
+const char* VECTOR_SIZE_EXCEPTION = "vector's size is not rows*cols";
+const char* POSITIVE_SIZE_EXCEPTION = "rows and cols needs to be positive";
+const char* DIFFERENT_DIMENSIONS_EXCEPTION = "Matrices have to be the same dimensions!";
+const char* ROWS_LHS_DIFFERENT_COLS_RHS_EXCEPTION = "# columns left matrix != # rows right matrix";
+const char* OUT_OF_BOUNDS_EXCEPTION = "Out of bounds!";
+const char* MATRIX_NOT_SQUARE_EXCEPTION = "Matrix is not square!";
+
 template <class T>
+/**
+ * Matrix class
+ * @tparam T int, double or Complex
+ */
 class Matrix
 {
 public:
@@ -185,17 +196,17 @@ Matrix<T>::Matrix(unsigned int rows, unsigned int cols, const std::vector<T>& ce
 {
     if (cells.size() != rows * cols)
     {
-        throw std::invalid_argument("vector's size is not rows*cols");
+        throw std::invalid_argument(VECTOR_SIZE_EXCEPTION);
     }
 
     if (rows <=0 || cols <= 0)
     {
-        throw std::invalid_argument("rows and cols needs to be positive");
+        throw std::invalid_argument(POSITIVE_SIZE_EXCEPTION);
     }
 
     _rows = rows;
     _cols = cols;
-    _matrix = std::vector<T>(_rows*_cols);
+    _matrix = std::vector<T>(_rows * _cols);
 
     for (unsigned int i = 0; i < _matrix.size(); ++i)
     {
@@ -235,7 +246,7 @@ Matrix<T> Matrix<T>::operator+(const Matrix<T>& rhs) const
 {
     if (rows() != rhs.rows() || cols() != rhs.cols())
     {
-        throw std::invalid_argument("Matrices have to be the same dimensions!");
+        throw std::invalid_argument(DIFFERENT_DIMENSIONS_EXCEPTION);
     }
 
     Matrix<T> res(rows(), cols());
@@ -251,7 +262,7 @@ Matrix<T> Matrix<T>::operator-(const Matrix<T>& rhs) const
 {
     if (rows() != rhs.rows() || cols() != rhs.cols())
     {
-        throw std::invalid_argument("Matrices have to be the same dimensions!");
+        throw std::invalid_argument(DIFFERENT_DIMENSIONS_EXCEPTION);
     }
 
     Matrix<T> res(rows(), cols());
@@ -267,7 +278,7 @@ Matrix<T> Matrix<T>::operator*(const Matrix<T>& rhs) const
 {
     if (cols() != rhs.rows())
     {
-        throw std::invalid_argument("# columns left matrix != # rows right matrix");
+        throw std::invalid_argument(ROWS_LHS_DIFFERENT_COLS_RHS_EXCEPTION);
     }
 
     Matrix<T> res(this->rows(), rhs.cols());
@@ -317,7 +328,7 @@ T& Matrix<T>::operator()(unsigned int row, unsigned int col)
 {
     if (row < 0 || row >= rows() || col < 0 || col >= cols())
     {
-        throw std::invalid_argument("Out of bounds!");
+        throw std::invalid_argument(OUT_OF_BOUNDS_EXCEPTION);
     }
 
     return _matrix[row * cols() + col];
@@ -328,7 +339,7 @@ T Matrix<T>::operator()(unsigned int row, unsigned int col) const
 {
     if (row < 0 || row >= rows() || col < 0 || col >= cols())
     {
-        throw std::invalid_argument("Out of bounds!");
+        throw std::invalid_argument(OUT_OF_BOUNDS_EXCEPTION);
     }
 
     return _matrix[row * cols() + col];
@@ -357,7 +368,7 @@ Matrix<T> Matrix<T>::trans() const
 {
     if (! isSquareMatrix())
     {
-        throw std::invalid_argument("Matrix is not square!");
+        throw std::invalid_argument(MATRIX_NOT_SQUARE_EXCEPTION);
     }
 
     Matrix<T> res(cols(), rows());
@@ -378,7 +389,7 @@ Matrix<Complex> Matrix<Complex>::trans() const
 {
     if (! isSquareMatrix())
     {
-        throw std::invalid_argument("Matrix is not square!");
+        throw std::invalid_argument(MATRIX_NOT_SQUARE_EXCEPTION);
     }
 
     Matrix<Complex> res(cols(), rows());
