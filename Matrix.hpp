@@ -199,7 +199,7 @@ Matrix<T>::Matrix(unsigned int rows, unsigned int cols, const std::vector<T>& ce
         throw std::invalid_argument(VECTOR_SIZE_EXCEPTION);
     }
 
-    if (rows <=0 || cols <= 0)
+    if (rows <= 0 || cols <= 0)
     {
         throw std::invalid_argument(POSITIVE_SIZE_EXCEPTION);
     }
