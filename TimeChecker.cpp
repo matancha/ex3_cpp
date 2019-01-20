@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     if (argc != NUM_ARGUMENTS + 1)
     {
         std::cerr << USAGE_MSG << std::endl;
-        exit(EXIT_FAILURE)
+        exit(EXIT_FAILURE);
     }
 
     int n = atoi(argv[MATRIX_SIZE_ARG_INDEX]);
