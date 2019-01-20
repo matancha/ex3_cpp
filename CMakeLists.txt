@@ -4,4 +4,4 @@ project(ex3_cpp)
 set(CMAKE_CXX_STANDARD 14)
 set(GCC_COVERAGE_COMPILE_FLAGS -Wall -Wextra -pthread -g)
 
-add_executable(exceptionTesterEx3.cpp Matrix.hpp Complex.cpp exceptionTesterEx3.cpp)
+add_executable(tester.cpp Matrix.hpp Complex.cpp tester.cpp)

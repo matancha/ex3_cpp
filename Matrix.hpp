@@ -278,11 +278,12 @@ Matrix<T> Matrix<T>::operator*(const Matrix<T>& rhs) const
         int row = cell / res.cols();
         int col = cell % res.cols();
 
-        for (unsigned int i = 0; i < this->rows(); ++i)
+        T sum = 0;
+        for (unsigned int i = 0; i < this->rows() - 1; ++i)
         {
-            res._matrix[cell] += this->_matrix[row * this->cols() + i] *
-                                 rhs._matrix[col+ i * rhs.cols()];
+            sum += mat(row, i) * rhs(i, col);
         }
+        res._matrix[cell] = sum;
     }
     return res;
 }
@@ -319,7 +320,7 @@ T& Matrix<T>::operator()(unsigned int row, unsigned int col)
         throw std::invalid_argument("Out of bounds!");
     }
 
-    return _matrix[row * rows() + col];
+    return _matrix[row * cols() + col];
 }
 
 template <typename T>
@@ -330,7 +331,7 @@ T Matrix<T>::operator()(unsigned int row, unsigned int col) const
         throw std::invalid_argument("Out of bounds!");
     }
 
-    return _matrix[row * rows() + col];
+    return _matrix[row * cols() + col];
 }
 
 template <typename T>
