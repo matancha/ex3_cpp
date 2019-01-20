@@ -1,0 +1,12 @@
+                ===============|=================
+                =======50======|======500========
+                ===+===|===*===|===+====|==*=====
+
+Eigen           0.00006|0.0015 | 0.0056  | 1.38564
+
+Matrix          0.00012|0.033   | 0.0009 | 3.42742
+
+1. Eigen Library runs faster especially in the multiplication operator. Eigen runs several actions
+concurrently, while my code does not.
+2. The difference is more pronounced in multiplication because it involves O(n^3) actions, instead
+of O(n).
