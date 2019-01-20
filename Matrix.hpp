@@ -12,154 +12,133 @@ class Matrix
 public:
     typedef typename std::vector<T>::const_iterator const_iterator;
 
-    Matrix() : Matrix(1, 1)
-    {
-    }
+    /**
+     * Default constructor
+     */
+    Matrix();
 
-    Matrix(unsigned int rows, unsigned int cols)// : Matrix(rows, cols, std::vector<T>{0})
-    {
-        _rows = rows;
-        _cols = cols;
+    /**
+     * Zero cells constructor
+     * @param rows
+     * @param cols
+     */
+    Matrix(unsigned int rows, unsigned int cols);
 
-        for (int i = 0; i < _rows*_cols; ++i)
-        {
-            _matrix.push_back(0);
-        }
-    }
+    /**
+     * Cells Constructor
+     * @param rows
+     * @param cols
+     * @param cells
+     */
+    Matrix(unsigned int rows, unsigned int cols, const std::vector<T>& cells);
 
-    Matrix(unsigned int rows, unsigned int cols, const std::vector<T>& cells)
-    {
-        _rows = rows;
-        _cols = cols;
+    /**
+     * Copy constructor
+     * @param other
+     */
+    Matrix(const Matrix<T>& other);
 
-        for (int i = 0; i < cells.size(); ++i)
-        {
-            _matrix.push_back(cells[i]);
-        }
-    }
-
-    Matrix(const Matrix<T>& other)
-    {
-        _rows = other._rows;
-        _cols = other._cols;
-
-        for (int i = 0; i < _rows*_cols; ++i)
-        {
-            _matrix.push_back(other._matrix[i]);
-        }
-    }
-
+    /**
+     * Default destructor
+     */
     ~Matrix() = default;
 
+    /**
+     * Matrix Iterator - begin
+     * @return
+     */
     const_iterator begin() const
     {
-        return _matrix.cbegin();
+        return _matrix.begin();
     }
 
+    /**
+     * Matrix iterator - end
+     * @return
+     */
     const_iterator end() const
     {
         return _matrix.cend();
     }
 
-    Matrix<T>& operator=(const Matrix<T>& rhs)
-    {
-        _rows = rhs._rows;
-        _cols = rhs._cols;
-        for (int i = 0; i < _rows*_cols; ++i)
-        {
-            _matrix[i] = rhs._matrix[i];
-        }
-        return *this;
-    }
+    /**
+     * Assignment operator
+     * @param rhs
+     * @return
+     */
+    Matrix<T>& operator=(const Matrix<T>& rhs);
 
-    Matrix<T> operator+(const Matrix<T>& rhs) const
-    {
-        if (rows() != rhs.rows() || cols() != rhs.cols())
-        {
-            throw "Matrices have to be the same dimensions!";
-        }
+    /**
+     * Plus operator
+     * @param rhs
+     * @return
+     */
+    Matrix<T> operator+(const Matrix<T>& rhs) const;
 
-        Matrix<T> res(rows(), cols());
-        for (int i = 0; i < rows()*cols(); ++i)
-        {
-            res._matrix[i] = _matrix[i] + rhs._matrix[i];
-        }
-        return res;
-    }
+    /**
+     * Minus operator
+     * @param rhs
+     * @return
+     */
+    Matrix<T> operator-(const Matrix<T>& rhs) const;
 
-    Matrix<T> operator-(const Matrix<T>& rhs) const
-    {
-        if (rows() != rhs.rows() || cols() != rhs.cols())
-        {
-            throw "Matrices have to be the same dimensions!";
-        }
+    /**
+     * Multiplication operator
+     * @param rhs
+     * @return
+     */
+    Matrix<T> operator*(const Matrix<T>& rhs) const;
 
-        Matrix<T> res(rows(), cols());
-        for (int i = 0; i < rows()*cols(); ++i)
-        {
-            res._matrix[i] = _matrix[i] - rhs._matrix[i];
-        }
-        return res;
-    }
+    /**
+     * Returns true if matrices are the same
+     * @param rhs
+     * @return
+     */
+    bool operator==(const Matrix<T>& rhs) const;
 
-    Matrix<T> operator*(const Matrix<T>& rhs) const
-    {
-        if (cols() != rhs.rows())
-        {
-            throw "# columns left matrix != # rows right matrix";
-        }
+    /**
+     * Returns true if matrices are different
+     * @param rhs
+     * @return
+     */
+    bool operator!=(const Matrix<T>& rhs) const;
 
-        Matrix<T> res(this->rows(), rhs.cols());
-        Matrix<T> mat = *this;
+    /**
+     * Returns cell at point (row, col)
+     * @param row
+     * @param col
+     * @return
+     */
+    T& operator()(unsigned int row, unsigned int col);
 
-        for (int cell = 0; cell < res._matrix.size(); ++cell)
-        {
-            int row = cell / res.cols();
-            int col = cell % res.cols();
+    /**
+     * Returns cell at point (row, col)
+     * @param row
+     * @param col
+     * @return
+     */
+    T operator()(unsigned int row, unsigned int col) const;
 
-            for (int i = 0; i < this->rows(); ++i)
-            {
-                res._matrix[cell] += this->_matrix[row*this->cols()+i] *
-                            rhs._matrix[col+i*rhs.cols()];
-            }
-        }
-        return res;
-    }
-
-    bool operator==(const Matrix<T>& rhs) const
-    {
-        for (int i = 0; i < rows()*cols(); ++i)
-        {
-            if (_matrix[i] != rhs._matrix[i])
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    bool operator!=(const Matrix<T>& rhs) const
-    {
-        return (! *this == rhs);
-    }
-
-    T& operator()(unsigned int row, unsigned int col)
-    {
-        return _matrix[row*rows() + col];
-    }
-
-    T operator()(unsigned int row, unsigned int col) const
-    {
-        return _matrix[row*rows() + col];
-    }
-
+    /**
+     * Returns transpose matrix
+     * @param row
+     * @param col
+     * @return
+     */
     Matrix trans() const;
 
-    bool isSquareMatrix() const
-    {
-        return rows() == cols();
-    }
+    /**
+     * Returns true if matrix is square
+     * @return
+     */
+    bool isSquareMatrix() const;
 
+    /**
+     * Prints matrix
+     * @param output
+     * @param mat
+     * @return
+     */
     friend std::ostream& operator<<(std::ostream& output, const Matrix<T>& mat)
     {
         for (int i = 0; i < mat.rows(); ++i)
@@ -168,26 +147,188 @@ public:
             {
                 output << mat(i, j) << '\t';
             }
-            output << '\n';
+            output << std::endl;
         }
         return output;
     }
 
-    unsigned int rows() const
-    {
-        return _rows;
-    }
+    /**
+     * Returns # of rows
+     * @return
+     */
+    unsigned int rows() const;
 
-    unsigned int cols() const
-    {
-        return _cols;
-    }
-
+    /**
+     * Returns # of cols
+     * @return
+     */
+    unsigned int cols() const;
 private:
     std::vector<T> _matrix;
     unsigned int _rows;
     unsigned int _cols;
 };
+
+template <typename T>
+Matrix<T>::Matrix() : Matrix(1, 1)
+{
+}
+
+template <typename T>
+Matrix<T>::Matrix(unsigned int rows, unsigned int cols) : Matrix(rows, cols, std::vector<T>{0})
+{
+}
+
+template <typename T>
+Matrix<T>::Matrix(unsigned int rows, unsigned int cols, const std::vector<T>& cells)
+{
+    _rows = rows;
+    _cols = cols;
+    _matrix = std::vector<T>(_rows*_cols);
+
+    for (int i = 0; i < _rows*_cols; ++i)
+    {
+        _matrix[i] = cells[i];
+    }
+}
+
+template <typename T>
+Matrix<T>::Matrix(const Matrix<T>& other)
+{
+    _rows = other._rows;
+    _cols = other._cols;
+    _matrix = std::vector<T>(other._matrix.size());
+
+    for (int i = 0; i < _rows*_cols; ++i)
+    {
+        _matrix[i] = other._matrix[i];
+    }
+}
+
+template <typename T>
+Matrix<T>& Matrix<T>::operator=(const Matrix<T>& rhs)
+{
+    _rows = rhs._rows;
+    _cols = rhs._cols;
+    _matrix = std::vector<T>(rhs._matrix.size());
+
+    for (int i = 0; i < _rows*_cols; ++i)
+    {
+        _matrix[i] = rhs._matrix[i];
+    }
+    return *this;
+}
+
+template <typename T>
+Matrix<T> Matrix<T>::operator+(const Matrix<T>& rhs) const
+{
+    if (rows() != rhs.rows() || cols() != rhs.cols())
+    {
+        throw "Matrices have to be the same dimensions!";
+    }
+
+    Matrix<T> res(rows(), cols());
+    for (int i = 0; i < rows()*cols(); ++i)
+    {
+        res._matrix[i] = _matrix[i] + rhs._matrix[i];
+    }
+    return res;
+}
+
+template <typename T>
+Matrix<T> Matrix<T>::operator-(const Matrix<T>& rhs) const
+{
+    if (rows() != rhs.rows() || cols() != rhs.cols())
+    {
+        throw "Matrices have to be the same dimensions!";
+    }
+
+    Matrix<T> res(rows(), cols());
+    for (int i = 0; i < rows()*cols(); ++i)
+    {
+        res._matrix[i] = _matrix[i] - rhs._matrix[i];
+    }
+    return res;
+}
+
+template <typename T>
+Matrix<T> Matrix<T>::operator*(const Matrix<T>& rhs) const
+{
+    if (cols() != rhs.rows())
+    {
+        throw "# columns left matrix != # rows right matrix";
+    }
+
+    Matrix<T> res(this->rows(), rhs.cols());
+    Matrix<T> mat = *this;
+
+    for (int cell = 0; cell < res._matrix.size(); ++cell)
+    {
+        int row = cell / res.cols();
+        int col = cell % res.cols();
+
+        for (int i = 0; i < this->rows(); ++i)
+        {
+            res._matrix[cell] += this->_matrix[row*this->cols()+i] *
+                                 rhs._matrix[col+i*rhs.cols()];
+        }
+    }
+    return res;
+}
+
+template <typename T>
+bool Matrix<T>::operator==(const Matrix<T>& rhs) const
+{
+    if (rows() != rhs.rows() || cols() != rhs.cols())
+    {
+        return false;
+    }
+
+    for (int i = 0; i < rows()*cols(); ++i)
+    {
+        if (_matrix[i] != rhs._matrix[i])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+template <typename T>
+bool Matrix<T>::operator!=(const Matrix<T>& rhs) const
+{
+    return (! *this == rhs);
+}
+
+template <typename T>
+T& Matrix<T>::operator()(unsigned int row, unsigned int col)
+{
+    return _matrix[row*rows() + col];
+}
+
+template <typename T>
+T Matrix<T>::operator()(unsigned int row, unsigned int col) const
+{
+    return _matrix[row*rows() + col];
+}
+
+template <typename T>
+bool Matrix<T>::isSquareMatrix() const
+{
+    return rows() == cols();
+}
+
+template <typename T>
+unsigned int Matrix<T>::rows() const
+{
+    return _rows;
+}
+
+template <typename T>
+unsigned int Matrix<T>::cols() const
+{
+    return _cols;
+}
 
 template <typename T>
 Matrix<T> Matrix<T>::trans() const
