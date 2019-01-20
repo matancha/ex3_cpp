@@ -1,6 +1,6 @@
 /**
  * A driver for testing the implementation of the Matrix.hpp file which is
- * an implementationf of a generic (template) matrix
+ * an implementation of of a generic (template) matrix
  */
 #include <iostream>
 #include <cassert>

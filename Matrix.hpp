@@ -1,3 +1,6 @@
+#ifndef EX3_CPP_MATRIX_H
+#define EX3_CPP_MATRIX_H
+
 #include <iostream>
 #include <vector>
 #include <iterator>
@@ -150,7 +153,7 @@ public:
         return _matrix[row*rows() + col];
     }
 
-    Matrix<T> trans() const;
+    Matrix trans() const;
 
     bool isSquareMatrix() const
     {
@@ -222,3 +225,5 @@ Matrix<Complex> Matrix<Complex>::trans() const
     }
     return res;
 }
+
+#endif //EX3_CPP_MATRIX_H
