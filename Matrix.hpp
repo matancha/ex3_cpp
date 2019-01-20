@@ -262,12 +262,12 @@ Matrix<T> Matrix<T>::operator*(const Matrix<T>& rhs) const
     Matrix<T> res(this->rows(), rhs.cols());
     Matrix<T> mat = *this;
 
-    for (int cell = 0; cell < res._matrix.size(); ++cell)
+    for (unsigned int cell = 0; cell < res._matrix.size(); ++cell)
     {
         int row = cell / res.cols();
         int col = cell % res.cols();
 
-        for (int i = 0; i < this->rows(); ++i)
+        for (unsigned int i = 0; i < this->rows(); ++i)
         {
             res._matrix[cell] += this->_matrix[row * this->cols() + i] *
                                  rhs._matrix[col+ i * rhs.cols()];
