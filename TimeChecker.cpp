@@ -18,10 +18,10 @@ int main(int argc, char *argv[])
 
     std::cout << "size " << matrixNum << std::endl;
 
-  //  Eigen::MatrixXd eigenMat1 = Eigen::MatrixXd::Random(matrixNum, matrixNum);
-//    Eigen::MatrixXd eigenMat2 = Eigen::MatrixXd::Random(matrixNum, matrixNum);
-//    Eigen::MatrixXd plusEigenMat;
- //   Eigen::MatrixXd multEigenMat;
+    Eigen::MatrixXd eigenMat1 = Eigen::MatrixXd::Random(matrixNum, matrixNum);
+    Eigen::MatrixXd eigenMat2 = Eigen::MatrixXd::Random(matrixNum, matrixNum);
+    Eigen::MatrixXd plusEigenMat;
+    Eigen::MatrixXd multEigenMat;
 
     std::vector<int> cells(matrixNum * matrixNum);
     for (int i = 0; i < matrixNum * matrixNum; ++i)
@@ -29,30 +29,23 @@ int main(int argc, char *argv[])
         cells[i] = 1;
     }
 
-    std::vector<int> cellsPlus(matrixNum * matrixNum);
-    std::vector<int> cellsMult(matrixNum * matrixNum);
-
-    std::cout << "hi" << std::endl;
-
     Matrix<int> libMat(matrixNum, matrixNum, cells);
-    std::cout << "hi2" << std::endl;
-    Matrix<int> plusMat(matrixNum, matrixNum, cellsPlus);
-    std::cout << "hi3" << std::endl;
-    Matrix<int> multMat(matrixNum, matrixNum, cellsMult);
+    Matrix<int> plusMat(matrixNum, matrixNum);
+    Matrix<int> multMat(matrixNum, matrixNum);
 
     std::stack<std::chrono::time_point<std::chrono::system_clock>> tictoc_stack;
     std::chrono::duration<double> elapsed_seconds;
 
     // Mult eigen Matrix
     tictoc_stack.push(std::chrono::system_clock::now());
- //   multEigenMat = eigenMat1 * eigenMat2;
+    multEigenMat = eigenMat1 * eigenMat2;
     elapsed_seconds = std::chrono::system_clock::now() - tictoc_stack.top();
     std::cout << "eigen mult " << elapsed_seconds.count() << std::endl;
     tictoc_stack.pop();
 
     // Plus eigen Matrix
     tictoc_stack.push(std::chrono::system_clock::now());
-  //  plusEigenMat = eigenMat1 + eigenMat2;
+    plusEigenMat = eigenMat1 + eigenMat2;
     elapsed_seconds = std::chrono::system_clock::now() - tictoc_stack.top();
     std::cout << "eigen add " << elapsed_seconds.count() << std::endl;
     tictoc_stack.pop();
