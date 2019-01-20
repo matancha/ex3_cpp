@@ -175,13 +175,24 @@ Matrix<T>::Matrix() : Matrix(1, 1)
 }
 
 template <typename T>
-Matrix<T>::Matrix(unsigned int rows, unsigned int cols) : Matrix(rows, cols, std::vector<T>{0})
+Matrix<T>::Matrix(unsigned int rows, unsigned int cols) : Matrix(rows, cols,
+                                                                 std::vector<T>(rows * cols))
 {
 }
 
 template <typename T>
 Matrix<T>::Matrix(unsigned int rows, unsigned int cols, const std::vector<T>& cells)
 {
+    if (cells.size() != rows * cols)
+    {
+        throw std::invalid_argument("vector's size is not rows*cols");
+    }
+
+    if (rows <=0 || cols <= 0)
+    {
+        throw std::invalid_argument("rows and cols needs to be positive");
+    }
+
     _rows = rows;
     _cols = cols;
     _matrix = std::vector<T>(_rows*_cols);
@@ -224,7 +235,7 @@ Matrix<T> Matrix<T>::operator+(const Matrix<T>& rhs) const
 {
     if (rows() != rhs.rows() || cols() != rhs.cols())
     {
-        throw "Matrices have to be the same dimensions!";
+        throw std::invalid_argument("Matrices have to be the same dimensions!");
     }
 
     Matrix<T> res(rows(), cols());
@@ -240,7 +251,7 @@ Matrix<T> Matrix<T>::operator-(const Matrix<T>& rhs) const
 {
     if (rows() != rhs.rows() || cols() != rhs.cols())
     {
-        throw "Matrices have to be the same dimensions!";
+        throw std::invalid_argument("Matrices have to be the same dimensions!");
     }
 
     Matrix<T> res(rows(), cols());
@@ -256,7 +267,7 @@ Matrix<T> Matrix<T>::operator*(const Matrix<T>& rhs) const
 {
     if (cols() != rhs.rows())
     {
-        throw "# columns left matrix != # rows right matrix";
+        throw std::invalid_argument("# columns left matrix != # rows right matrix");
     }
 
     Matrix<T> res(this->rows(), rhs.cols());
@@ -303,12 +314,22 @@ bool Matrix<T>::operator!=(const Matrix<T>& rhs) const
 template <typename T>
 T& Matrix<T>::operator()(unsigned int row, unsigned int col)
 {
+    if (row < 0 || row >= rows() || col < 0 || col >= cols())
+    {
+        throw std::invalid_argument("Out of bounds!");
+    }
+
     return _matrix[row * rows() + col];
 }
 
 template <typename T>
 T Matrix<T>::operator()(unsigned int row, unsigned int col) const
 {
+    if (row < 0 || row >= rows() || col < 0 || col >= cols())
+    {
+        throw std::invalid_argument("Out of bounds!");
+    }
+
     return _matrix[row * rows() + col];
 }
 
@@ -335,7 +356,7 @@ Matrix<T> Matrix<T>::trans() const
 {
     if (! isSquareMatrix())
     {
-        throw "Matrix is not square!";
+        throw std::invalid_argument("Matrix is not square!");
     }
 
     Matrix<T> res(cols(), rows());
@@ -354,6 +375,11 @@ Matrix<T> Matrix<T>::trans() const
 template <>
 Matrix<Complex> Matrix<Complex>::trans() const
 {
+    if (! isSquareMatrix())
+    {
+        throw std::invalid_argument("Matrix is not square!");
+    }
+
     Matrix<Complex> res(cols(), rows());
     Matrix<Complex> mat = *this;
 
