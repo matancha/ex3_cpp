@@ -1,4 +1,4 @@
-//#include <eigen3/Eigen/Dense>
+#include <eigen3/Eigen/Dense>
 #include <iostream>
 #include <vector>
 #include <stack>
@@ -15,8 +15,13 @@ int main(int argc, char *argv[])
     }
 
     unsigned int matrixNum = atoi(argv[1]);
-//  MatrixXd eigenMat1 = MatrixXd::Random(matrixNum, matrixNum);
-//  MatrixXd eigenMat2 = MatrixXd::Random(matrixNum, matrixNum);
+
+    std::cout << "size " << matrixNum << std::endl;
+
+    MatrixXd eigenMat1 = MatrixXd::Random(matrixNum, matrixNum);
+    MatrixXd eigenMat2 = MatrixXd::Random(matrixNum, matrixNum);
+    MatrixXd plusEigenMat;
+    MatrixXd multEigenMat;
 
     std::vector<int> cells;
     for (int i = 0; i < matrixNum * matrixNum; ++i)
@@ -26,20 +31,35 @@ int main(int argc, char *argv[])
 
     Matrix<int> libMat(matrixNum, matrixNum, cells);
     Matrix<int> plusMat(matrixNum, matrixNum);
+    Matrix<int> multMat(matrixNum, matrixNum);
     std::stack<std::chrono::time_point<std::chrono::system_clock>> tictoc_stack;
     std::chrono::duration<double> elapsed_seconds;
+
+    // Mult eigen Matrix
+    tictoc_stack.push(std::chrono::system_clock::now());
+    multEigenMat = eigenMat1 * eigenMat2;
+    elapsed_seconds = std::chrono::system_clock::now() - tictoc_stack.top();
+    std::cout << "eigen mult " << elapsed_seconds.count() << std::endl;
+    tictoc_stack.pop();
+
+    // Plus eigen Matrix
+    tictoc_stack.push(std::chrono::system_clock::now());
+    plusEigenMat = eigenMat1 + eigenMat2;
+    elapsed_seconds = std::chrono::system_clock::now() - tictoc_stack.top();
+    std::cout << "eigen add " << elapsed_seconds.count() << std::endl;
+    tictoc_stack.pop();
+
+    // Multiplication lib Matrix
+    tictoc_stack.push(std::chrono::system_clock::now());
+    multMat = libMat * libMat;
+    elapsed_seconds = std::chrono::system_clock::now() - tictoc_stack.top();
+    std::cout << "matlib mult " << elapsed_seconds.count() << std::endl;
+    tictoc_stack.pop();
 
     // Plus lib Matrix
     tictoc_stack.push(std::chrono::system_clock::now());
     plusMat = libMat + libMat;
     elapsed_seconds = std::chrono::system_clock::now() - tictoc_stack.top();
-    std::cout << "Time elapsed: " << elapsed_seconds.count() << "sec\n";
-    tictoc_stack.pop();
-
-    // Multiplication lib Matrix
-    tictoc_stack.push(std::chrono::system_clock::now());
-    plusMat = libMat * libMat;
-    elapsed_seconds = std::chrono::system_clock::now() - tictoc_stack.top();
-    std::cout << "Time elapsed: " << elapsed_seconds.count() << "sec\n";
+    std::cout << "matlib add " << elapsed_seconds.count() << std::endl;
     tictoc_stack.pop();
 }

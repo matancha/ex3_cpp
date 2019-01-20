@@ -16,15 +16,15 @@ public:
     {
     }
 
-    Matrix(unsigned int rows, unsigned int cols) : Matrix(rows, cols, std::vector<T>{0})
+    Matrix(unsigned int rows, unsigned int cols)// : Matrix(rows, cols, std::vector<T>{0})
     {
-//        _rows = rows;
-//        _cols = cols;
-//
-//        for (int i = 0; i < _rows*_cols; ++i)
-//        {
-//            _matrix.push_back(0);
-//        }
+        _rows = rows;
+        _cols = cols;
+
+        for (int i = 0; i < _rows*_cols; ++i)
+        {
+            _matrix.push_back(0);
+        }
     }
 
     Matrix(unsigned int rows, unsigned int cols, const std::vector<T>& cells)
